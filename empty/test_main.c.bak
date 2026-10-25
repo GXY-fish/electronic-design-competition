@@ -1,0 +1,235 @@
+/*
+ * H题 K230 位置帧串口测试程序 (v2 — 无 printf 版)
+ * ============================================
+ * 接收 K230 的 13 字节二进制帧, 解析后通过 CH340 打印到电脑
+ *
+ * !!! 重要: 完全不使用 printf, 避免 ti-clang printf 导致栈溢出 HardFault
+ *     改用 uart0_send_string + 自定义整数转字符串
+ *
+ * 硬件:
+ *   UART3 (PA25=RX) <- K230 TXD (IO9)
+ *   UART0 (PA10=TX) -> 板载 CH340 -> USB -> 电脑
+ *   GND 共地
+ *   PB22 = 板载 LED (每秒闪烁 = 程序活着)
+ *
+ * 电脑串口助手: 115200, 8N1
+ *
+ * 输出格式 (每帧一行):
+ *   [帧号] seq=序号 x=位置mm v=速度mm/s conf=置信度 flags=标志 fps=帧率
+ *   [帧号] seq=序号 x=位置mm v=速度mm/s conf=置信度 flags=标志 LOST=丢帧数 fps=帧率
+ *
+ * 每秒统计行:
+ *   --- STATS: total=总帧数 crc_err=CRC错误数 fps=帧率 ---
+ *   --- No data yet (tick=毫秒) ---     (还没收到 K230 数据时)
+ */
+
+#include "ti_msp_dl_config.h"
+#include <string.h>
+#include "board.h"
+#include "bsp_uart.h"
+#include "bsp_k230_protocol.h"
+
+/* ============================================================
+ *  自定义打印函数 (完全绕过 printf, 零栈溢出风险)
+ *  print_int 栈使用: buf[12] + 4 个局部变量 ≈ 32 字节
+ *  对比 printf: 200-400 字节 → 这就是之前 HardFault 的根因
+ * ============================================================ */
+
+static void print_str(const char *s)
+{
+    uart0_send_string((char *)s);
+}
+
+static void print_char(char c)
+{
+    uart0_send_char((unsigned char)c);
+}
+
+/* 有符号整数转字符串并输出 */
+static void print_int(int val)
+{
+    char buf[12];
+    int i = 0;
+    int neg = 0;
+    unsigned int uval;
+
+    if (val < 0)
+    {
+        neg = 1;
+        uval = (unsigned int)(-val);
+    }
+    else
+    {
+        uval = (unsigned int)val;
+    }
+
+    if (uval == 0)
+    {
+        buf[i++] = '0';
+    }
+    else
+    {
+        while (uval > 0)
+        {
+            buf[i++] = '0' + (uval % 10);
+            uval /= 10;
+        }
+    }
+
+    if (neg)
+        buf[i++] = '-';
+
+    /* 反转 buffer */
+    for (int j = 0; j < i / 2; j++)
+    {
+        char tmp = buf[j];
+        buf[j] = buf[i - 1 - j];
+        buf[i - 1 - j] = tmp;
+    }
+
+    buf[i] = '\0';
+    print_str(buf);
+}
+
+/* ============================================================
+ *  LED 控制 (PB22, 高电平亮)
+ * ============================================================ */
+static void led_on(void)
+{
+    DL_GPIO_setPins(LED_PORT, LED_PIN_22_PIN);
+}
+
+static void led_off(void)
+{
+    DL_GPIO_clearPins(LED_PORT, LED_PIN_22_PIN);
+}
+
+static void led_toggle(void)
+{
+    static uint8_t state = 0;
+    if (state)
+    {
+        led_off();
+        state = 0;
+    }
+    else
+    {
+        led_on();
+        state = 1;
+    }
+}
+
+/* ============================================================
+ *  主程序
+ * ============================================================ */
+int main(void)
+{
+    SYSCFG_DL_init();
+
+    uart0_init();
+    uart3_init();
+    uart3_enable_rx_irq();
+
+    delay_ms(200);
+
+    /* LED 亮 = 程序启动 */
+    led_on();
+
+    /* 启动 banner (纯字符串, 不经过 printf) */
+    print_str("\r\n");
+    print_str("==============================\r\n");
+    print_str(" H K230 UART Test v2\r\n");
+    print_str(" (no-printf, stack-safe)\r\n");
+    print_str(" UART3: 115200 (K230)\r\n");
+    print_str(" UART0: 115200 (CH340)\r\n");
+    print_str("==============================\r\n");
+    print_str(" Waiting for K230 data...\r\n\r\n");
+
+    /* LED 灭 = 初始化完成 */
+    delay_ms(100);
+    led_off();
+
+    int sys_tick = 0;
+    int last_seq = 0xFF;
+    int frame_count = 0;
+    int fps_count = 0;
+    int fps_timer = 0;
+    int fps = 0;
+
+    while (1)
+    {
+        sys_tick++;
+        delay_ms(1);
+
+        /* 协议解析 */
+        Pto_Loop();
+
+        BallVision_t ball;
+        if (BallVision_Read(&ball))
+        {
+            frame_count++;
+            fps_count++;
+
+            if (sys_tick - fps_timer >= 1000)
+            {
+                fps = fps_count;
+                fps_count = 0;
+                fps_timer = sys_tick;
+            }
+
+            int expected_seq = (last_seq + 1) & 0xFF;
+            int lost_frames = 0;
+            if (ball.seq != expected_seq)
+            {
+                lost_frames = (ball.seq - expected_seq) & 0xFF;
+            }
+            last_seq = ball.seq;
+
+            /* 输出一行数据 */
+            print_str("[");
+            print_int(frame_count);
+            print_str("] seq=");
+            print_int(ball.seq);
+            print_str(" x=");
+            print_int(ball.x_mm);
+            print_str("mm v=");
+            print_int(ball.v_mm_s);
+            print_str("mm/s conf=");
+            print_int(ball.confidence);
+            print_str(" flags=");
+            print_int(ball.flags);
+
+            if (lost_frames > 0)
+            {
+                print_str(" LOST=");
+                print_int(lost_frames);
+            }
+
+            print_str(" fps=");
+            print_int(fps);
+            print_str("\r\n");
+        }
+
+        /* 每秒: LED 闪烁 + 状态报告 */
+        if (sys_tick % 1000 == 0)
+        {
+            led_toggle();
+
+            if (frame_count > 0)
+            {
+                print_str("--- STATS: total=");
+                print_int(frame_count);
+                print_str(" fps=");
+                print_int(fps);
+                print_str(" ---\r\n");
+            }
+            else
+            {
+                /* 还没收到数据, 输出心跳 */
+                print_str("--- No data (tick=");
+                print_int(sys_tick / 1000);
+                print_str("s) ---\r\n");
+            }
+        }
+    }
+}

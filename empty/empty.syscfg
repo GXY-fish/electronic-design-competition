@@ -1,0 +1,119 @@
+/**
+ * K230 钢球测速 UART 测试 — MSPM0G3507 SysConfig
+ *
+ * 硬件配置:
+ *   UART0 (PA10=TX, PA11=RX, 115200) - 调试串口 (板载 CH340, USB 直连电脑)
+ *   UART3 (PA26=TX, PA25=RX, 115200) - K230 通信串口
+ *   PWM   (TIMG7, PA27, 50Hz)          - 舵机控制 (0.5~2.5ms脉宽)
+ *   GPIO  (PB22)                     - 板载 LED (每秒闪烁 = 程序活着)
+ *
+ * 时钟: HFXT 40MHz 外部晶振 + SYSPLL 2X = 80MHz
+ *
+ * @cliArgs --device "MSPM0G350X" --part "Default" --package "LQFP-64(PM)" --product "mspm0_sdk@2.02.00.05"
+ * @v2CliArgs --device "MSPM0G3507" --package "LQFP-64(PM)" --product "mspm0_sdk@2.02.00.05"
+ * @versions {"tool":"1.21.0+3721"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const GPIO   = scripting.addModule("/ti/driverlib/GPIO", {}, false);
+const GPIO1  = GPIO.addInstance();
+const PWM    = scripting.addModule("/ti/driverlib/PWM", {}, false);
+const PWM1   = PWM.addInstance();
+const SYSCTL = scripting.addModule("/ti/driverlib/SYSCTL");
+const UART   = scripting.addModule("/ti/driverlib/UART", {}, false);
+const UART1  = UART.addInstance();
+const UART2  = UART.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+
+// ====== 时钟树: HFXT 40MHz 晶振 + SYSPLL 2X = 80MHz ======
+const divider9       = system.clockTree["UDIV"];
+divider9.divideValue = 2;
+
+const mux4       = system.clockTree["EXHFMUX"];
+mux4.inputSelect = "EXHFMUX_XTAL";
+
+const mux8       = system.clockTree["HSCLKMUX"];
+mux8.inputSelect = "HSCLKMUX_SYSPLL2X";
+
+const mux12       = system.clockTree["SYSPLLMUX"];
+mux12.inputSelect = "zSYSPLLMUX_HFCLK";
+
+const pinFunction4        = system.clockTree["HFXT"];
+pinFunction4.inputFreq    = 40;
+pinFunction4.enable       = true;
+pinFunction4.HFCLKMonitor = true;
+pinFunction4.HFXTStartup  = 20;
+
+// ====== GPIO: 板载 LED (PB22, 推挽输出) ======
+GPIO1.$name                          = "LED";
+GPIO1.associatedPins[0].$name        = "PIN_22";
+GPIO1.associatedPins[0].ioStructure  = "SD";
+GPIO1.associatedPins[0].assignedPort = "PORTB";
+GPIO1.associatedPins[0].assignedPin  = "22";
+GPIO1.associatedPins[0].pin.$assign  = "PB22";
+
+const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
+
+// ====== 时钟配置 ======
+SYSCTL.forceDefaultClkConfig = true;
+SYSCTL.clockTreeEn           = true;
+SYSCTL.validateClkStatus     = true;
+
+// ====== UART0: 调试串口 (PA10=TX, PA11=RX, 115200, 板载 CH340 USB 直连) ======
+UART1.$name                        = "UART_0";
+UART1.targetBaudRate               = 115200;
+UART1.peripheral.$assign           = "UART0";
+UART1.peripheral.rxPin.$assign     = "PA11";
+UART1.peripheral.txPin.$assign     = "PA10";
+UART1.txPinConfig.$name            = "ti_driverlib_gpio_GPIOPinGeneric0";
+UART1.txPinConfig.enableConfig     = true;
+UART1.txPinConfig.internalResistor = "PULL_UP";
+UART1.rxPinConfig.$name            = "ti_driverlib_gpio_GPIOPinGeneric1";
+UART1.rxPinConfig.enableConfig     = true;
+UART1.rxPinConfig.internalResistor = "PULL_UP";
+
+// ====== UART3: K230 通信串口 (PA26=TX, PA25=RX, 115200) ======
+// 芯片引脚复用固定: PA25(PINCM55)=UART3_RX, PA26(PINCM59)=UART3_TX
+UART2.$name                            = "UART_3";
+UART2.targetBaudRate                   = 115200;
+UART2.peripheral.$assign               = "UART3";
+UART2.peripheral.rxPin.$assign         = "PA25";
+UART2.peripheral.txPin.$assign         = "PA26";
+UART2.txPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric2";
+UART2.txPinConfig.enableConfig         = true;
+UART2.txPinConfig.internalResistor     = "PULL_UP";
+UART2.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric3";
+UART2.rxPinConfig.enableConfig         = true;
+UART2.rxPinConfig.internalResistor     = "PULL_UP";
+
+// ====== PWM SERVO: 舵机控制 (TIMG7, PA27, 50Hz) ======
+PWM1.$name                              = "SERVO";
+PWM1.clockDivider                       = 8;
+PWM1.clockPrescale                      = 100;
+PWM1.pwmMode                            = "EDGE_ALIGN_UP";
+PWM1.ccIndex = [1];
+PWM1.timerCount                         = 2000;
+PWM1.timerStartTimer                    = true;
+PWM1.peripheral.$assign                 = "TIMG7";
+PWM1.peripheral.ccp1Pin.$assign         = "PA27";
+PWM1.ccp1PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric7";
+PWM1.ccp1PinConfig.direction            = scripting.forceWrite("OUTPUT");
+PWM1.PWM_CHANNEL_1.$name                = "ti_driverlib_pwm_PWMTimerCC0";
+PWM1.PWM_CHANNEL_1.dutyCycle            = 7.5;
+
+/**
+ * Pinmux solution for unlocked pins/peripherals.
+ */
+pinFunction4.peripheral.$suggestSolution           = "SYSCTL";
+pinFunction4.peripheral.hfxInPin.$suggestSolution  = "PA5";
+pinFunction4.peripheral.hfxOutPin.$suggestSolution = "PA6";
+Board.peripheral.$suggestSolution                  = "DEBUGSS";
+Board.peripheral.swclkPin.$suggestSolution         = "PA20";
+Board.peripheral.swdioPin.$suggestSolution         = "PA19";
+PWM1.peripheral.$suggestSolution                   = "TIMG7";
+PWM1.peripheral.ccp1Pin.$suggestSolution            = "PA27";

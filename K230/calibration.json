@@ -1,0 +1,31 @@
+{
+    "calibrated": false,
+    "description": "钢球像素→毫米标定参数 (5点线性拟合)",
+    "note": "将此文件拷贝到 K230 SD 卡 /sdcard/kmodel/calibration.json",
+    "note2": "标定方法: 运行 calibrate.py, 按提示放置球在5个位置, 自动生成此文件",
+    "calibration_date": "",
+    "operator": "",
+
+    "pixel_points": {
+        "minus10cm": 0,
+        "minus5cm": 0,
+        "center": 0,
+        "plus5cm": 0,
+        "plus10cm": 0
+    },
+
+    "scale": 0.5,
+    "offset": -160.0,
+
+    "validation": {
+        "max_residual_mm": 0,
+        "std_dev_mm": 0,
+        "samples": 0
+    },
+
+    "coordinate_def": {
+        "x_mm": "中心O为0, 向执行机构端为正, 单位mm",
+        "pixel_cx": "钢球检测框中心x坐标 (CHN_1 RGB888 坐标系)",
+        "formula": "x_mm = scale * pixel_cx + offset"
+    }
+}

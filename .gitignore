@@ -1,0 +1,24 @@
+# CCS Build Output
+Debug/
+Release/
+*.out
+*.map
+*.hex
+
+# Clangd cache
+.clangd/
+
+# IDE
+.settings/
+.theia/
+.ccsproject
+.cproject
+.project
+
+# VS Code (keep .vscode/c_cpp_properties.json for reference)
+.vscode/settings.json
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

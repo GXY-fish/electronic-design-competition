@@ -1,0 +1,77 @@
+/*
+ * MSPM0 端集成示例 — K230 二进制位置帧接收
+ * ============================================
+ *
+ * 这个文件展示如何将 bsp_k230_protocol 集成到 MSPM0 工程。
+ * 队友只需要:
+ *   1. 把 bsp_k230_protocol.c/.h 拷到 BSP/ 目录
+ *   2. 在自己的 main.c 中参照本文件调用相关函数
+ *   3. 在 UART3 中断里调用 Pto_Data_Receive()
+ *
+ * 不需要修改 bsp_uart.c (中断函数里已经有 Pto_Data_Receive 调用)
+ */
+
+#include "ti_msp_dl_config.h"
+#include "board.h"
+#include "bsp_uart.h"
+#include "bsp_k230_protocol.h"
+
+/* 系统 tick (ms), 队友根据自己的定时器实现 */
+static volatile uint32_t g_sys_tick_ms = 0;
+
+void SysTick_Handler(void)
+{
+    g_sys_tick_ms++;
+}
+
+int main(void)
+{
+    SYSCFG_DL_init();
+    board_init();
+
+    /* UART0: 调试串口 (板载 CH340, 115200) */
+    uart0_init();
+
+    /* UART3: K230 通信 (PA26=TX, PA25=RX)
+     * SysConfig 已配置硬件, 这里开启 RX 中断 */
+    uart3_init();
+    uart3_enable_rx_irq();
+
+    delay_ms(100);
+    printf("\r\n=== H题 K230 位置帧接收示例 ===\r\n");
+    printf("等待 K230 数据...\r\n");
+
+    /* 主循环 */
+    while (1)
+    {
+        /* 1. 解析 UART 接收到的完整帧 */
+        Pto_Loop();
+
+        /* 2. 读取最新位置数据 */
+        BallVision_t ball;
+        if (BallVision_Read(&ball))
+        {
+            /* 更新接收时间戳 */
+            g_ball_vision.rx_local_ms = g_sys_tick_ms;
+
+            /* 3. 打印位置和速度 (调试用) */
+            float x_cm = ball.x_mm / 10.0f;
+            float v_cm = ball.v_mm_s / 10.0f;
+            printf("x=%.1fcm v=%.1fcm/s conf=%d flags=0x%02X seq=%d\r\n",
+                   x_cm, v_cm, ball.confidence, ball.flags, ball.seq);
+
+            /* 4. 这里把 ball.x_mm 和 ball.v_mm_s 喂给你的 PID 控制器
+             *    例如: pid_update(ball.x_mm, ball.v_mm_s); */
+        }
+
+        /* 5. 视觉超时检查 */
+        if (BallVision_IsTimeout(g_sys_tick_ms))
+        {
+            /* 超时: K230 断连或丢球
+             * 安全策略: 舵机回中, 底盘减速 */
+            /* safety_mode(); */
+        }
+
+        delay_ms(1);
+    }
+}

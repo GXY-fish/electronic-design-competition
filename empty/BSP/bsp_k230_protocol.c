@@ -1,0 +1,209 @@
+#include "bsp_k230_protocol.h"
+#include "bsp_uart.h"
+#include <string.h>
+
+/*
+ * K230 二进制位置帧解析 (v2 — 双速度)
+ * ==================================
+ *
+ * UART 中断逐字节喂入, 状态机解析 15 字节帧
+ * CRC8 校验失败则丢帧; 主循环通过 BallVision_Read() 读取最新数据
+ *
+ * 线程安全:
+ *   - Pto_Data_Receive() 在 UART 中断中调用
+ *   - Pto_Loop() 在主循环中调用
+ *   - 使用 g_parse_done 标志保证不冲突
+ */
+
+/* 全局钢球位置数据 */
+BallVision_t g_ball_vision = {0};
+
+/* 解析状态机 */
+static ParseState_t g_parse_state = PARSE_WAIT_SOF1;
+static uint8_t g_parse_buf[PTO_FRAME_TOTAL];
+static uint8_t g_parse_index = 0;
+
+/* 完整帧缓冲 (中断写入, 主循环读取) */
+static uint8_t g_complete_frame[PTO_FRAME_TOTAL];
+static volatile uint8_t g_parse_done = 0;
+
+/* 统计 */
+static uint32_t g_frame_count = 0;
+static uint32_t g_crc_error_count = 0;
+static uint32_t g_last_seq = 0xFF;
+
+/* ============================================================
+ *  CRC8 计算 (多项式 0x07, 初始值 0x00)
+ * ============================================================ */
+static uint8_t crc8_calc(const uint8_t *data, uint8_t len)
+{
+    uint8_t crc = 0;
+    uint8_t i, j;
+    for (i = 0; i < len; i++)
+    {
+        crc ^= data[i];
+        for (j = 0; j < 8; j++)
+        {
+            if (crc & 0x80)
+                crc = (crc << 1) ^ 0x07;
+            else
+                crc <<= 1;
+        }
+    }
+    return crc;
+}
+
+/* ============================================================
+ *  逐字节喂入 (UART 中断调用)
+ *  状态机: SOF1 → SOF2 → LEN → BODY(11字节) → CRC
+ * ============================================================ */
+void Pto_Data_Receive(uint8_t byte)
+{
+    switch (g_parse_state)
+    {
+    case PARSE_WAIT_SOF1:
+        if (byte == PTO_SOF1)
+        {
+            g_parse_buf[0] = byte;
+            g_parse_state = PARSE_WAIT_SOF2;
+        }
+        break;
+
+    case PARSE_WAIT_SOF2:
+        if (byte == PTO_SOF2)
+        {
+            g_parse_buf[1] = byte;
+            g_parse_state = PARSE_WAIT_LEN;
+        }
+        else
+        {
+            /* 不是 0x55, 重新等帧头 */
+            g_parse_state = PARSE_WAIT_SOF1;
+            /* 如果 byte 本身是 0xAA, 留在 SOF1 状态 */
+            if (byte == PTO_SOF1)
+                g_parse_state = PARSE_WAIT_SOF2;
+        }
+        break;
+
+    case PARSE_WAIT_LEN:
+        if (byte == PTO_LEN_VAL)
+        {
+            g_parse_buf[2] = byte;
+            g_parse_index = 3;
+            g_parse_state = PARSE_RECV_BODY;
+        }
+        else
+        {
+            g_parse_state = PARSE_WAIT_SOF1;
+            if (byte == PTO_SOF1)
+                g_parse_state = PARSE_WAIT_SOF2;
+        }
+        break;
+
+    case PARSE_RECV_BODY:
+        /* 接收 SEQ ~ FLAGS 共 11 字节 (字节 3 ~ 13) */
+        g_parse_buf[g_parse_index] = byte;
+        g_parse_index++;
+
+        if (g_parse_index >= PTO_FRAME_TOTAL - 1) /* 14 = 15-1, 还差 CRC */
+        {
+            g_parse_state = PARSE_WAIT_CRC;
+        }
+        break;
+
+    case PARSE_WAIT_CRC:
+        g_parse_buf[14] = byte;  /* CRC 字节 */
+
+        /* 校验 CRC: 从 LEN(字节2) 到 FLAGS(字节13) 共 12 字节 */
+        uint8_t calc_crc = crc8_calc(&g_parse_buf[2], PTO_CRC_LEN);
+
+        if (calc_crc == byte)
+        {
+            /* CRC 校验通过: 复制到完整帧缓冲 */
+            memcpy(g_complete_frame, g_parse_buf, PTO_FRAME_TOTAL);
+            g_parse_done = 1;
+            g_frame_count++;
+        }
+        else
+        {
+            g_crc_error_count++;
+        }
+
+        /* 回到初始状态 */
+        g_parse_state = PARSE_WAIT_SOF1;
+        break;
+
+    default:
+        g_parse_state = PARSE_WAIT_SOF1;
+        break;
+    }
+}
+
+/* ============================================================
+ *  主循环调用: 解析完整帧, 更新 g_ball_vision
+ * ============================================================ */
+void Pto_Loop(void)
+{
+    if (g_parse_done)
+    {
+        uint8_t *f = g_complete_frame;
+
+        /* 解析各字段 (小端) */
+        g_ball_vision.seq          = f[3];
+        g_ball_vision.timestamp_ms = (uint16_t)f[4] | ((uint16_t)f[5] << 8);
+        g_ball_vision.x_mm         = (int16_t)((uint16_t)f[6] | ((uint16_t)f[7] << 8));
+        g_ball_vision.v_ab_mm_s    = (int16_t)((uint16_t)f[8] | ((uint16_t)f[9] << 8));
+        g_ball_vision.v_df_mm_s    = (int16_t)((uint16_t)f[10] | ((uint16_t)f[11] << 8));
+        g_ball_vision.confidence   = f[12];
+        g_ball_vision.flags        = f[13];
+        g_ball_vision.rx_local_ms  = 0;  /* 由调用方填充, 或用 sys_tick */
+        g_ball_vision.fresh        = 1;
+
+        g_parse_done = 0;
+    }
+}
+
+/* ============================================================
+ *  读取最新位置数据 (返回 1=有新数据)
+ * ============================================================ */
+uint8_t BallVision_Read(BallVision_t *out)
+{
+    if (g_ball_vision.fresh)
+    {
+        if (out)
+            *out = g_ball_vision;
+        g_ball_vision.fresh = 0;
+        return 1;
+    }
+    return 0;
+}
+
+/* ============================================================
+ *  判断视觉是否超时
+ *  需要外部提供 current_ms (系统 tick)
+ * ============================================================ */
+uint8_t BallVision_IsTimeout(uint32_t current_ms)
+{
+    if (g_ball_vision.fresh == 0 && g_ball_vision.rx_local_ms == 0)
+        return 1;  /* 从未收到数据 */
+
+    uint32_t age = current_ms - g_ball_vision.rx_local_ms;
+    if (age > PTO_VISION_TIMEOUT_MS)
+        return 1;
+
+    if (g_ball_vision.flags & FLAG_LOST)
+        return 1;
+
+    if (g_ball_vision.confidence < 50)
+        return 1;
+
+    return 0;
+}
+
+/* ============================================================
+ *  获取当前帧年龄 (ms)
+ * ============================================================ */
+uint32_t BallVision_GetAge(uint32_t current_ms)
+{
+    return current_ms - g_ball_vision.rx_local_ms;
+}
