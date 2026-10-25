@@ -1,0 +1,9 @@
+Debug/
+.settings/
+targetConfigs/
+*.out
+*.map
+*.o
+*.d
+*.d_raw
+*.linkInfo.xml

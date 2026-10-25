@@ -1,0 +1,782 @@
+
+**** Build of configuration 'Debug' for project 'empty_LP_MSPM0G3507_nortos_ticlang' ****
+
+"C:\\ti\\ccs2051\\ccs\\utils\\bin\\gmake" -k -j 16 all -r -O 
+ 
+SysConfig - building file: "../empty.syscfg"
+"C:/ti/ccs2051/ccs/utils/sysconfig_1.27.1/sysconfig_cli.bat" -s "C:/ti/mspm0_sdk_2_11_00_07/.metadata/product.json" --script "C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/empty.syscfg" -o "." --compiler ticlang
+Running script...
+Validating...
+info: PWM_0(/ti/driverlib/PWM): Peripheral does not retain register contents in STOP or STANDBY modes. User should take care to save and restore register configuration in application. See Retention Configuration section for more details.
+info: TIMER_0(/ti/driverlib/TIMER): Peripheral does not retain register contents in STOP or STANDBY modes. User should take care to save and restore register configuration in application. See Retention Configuration section for more details.
+Generating Code (empty.syscfg)...
+Writing C:\Users\coxfi\workspace_ccstheia\empty_LP_MSPM0G3507_nortos_ticlang\Debug\device_linker.cmd...
+Writing C:\Users\coxfi\workspace_ccstheia\empty_LP_MSPM0G3507_nortos_ticlang\Debug\device.opt...
+Writing C:\Users\coxfi\workspace_ccstheia\empty_LP_MSPM0G3507_nortos_ticlang\Debug\device.cmd.genlibs...
+Writing C:\Users\coxfi\workspace_ccstheia\empty_LP_MSPM0G3507_nortos_ticlang\Debug\ti_msp_dl_config.c...
+Writing C:\Users\coxfi\workspace_ccstheia\empty_LP_MSPM0G3507_nortos_ticlang\Debug\ti_msp_dl_config.h...
+Writing C:\Users\coxfi\workspace_ccstheia\empty_LP_MSPM0G3507_nortos_ticlang\Debug\Event.dot...
+Finished building: "../empty.syscfg"
+ 
+Arm Compiler - building file: "../empty.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"empty.d_raw" -MT"empty.o"  @"./device.opt"  -o"empty.o" "../empty.c"
+In file included from ../empty.c:23:
+..\hardware/mpu6050.h:47:9: warning: 'M_PI' macro redefined [-Wmacro-redefined]
+   47 | #define M_PI                            (float)3.1415926535f
+      |         ^
+C:\ti\ccs2051\ccs\tools\compiler\ti-cgt-armllvm_4.0.4.LTS\include\c\math.h:156:9: note: previous definition is here
+  156 | #define M_PI            3.14159265358979323846  /* pi */
+      |         ^
+../empty.c:127:20: error: use of undeclared identifier 'ENCODER2_INT_IRQN'; did you mean 'COMP2_INT_IRQn'?
+  127 |     NVIC_EnableIRQ(ENCODER2_INT_IRQN);
+      |                    ^~~~~~~~~~~~~~~~~
+      |                    COMP2_INT_IRQn
+C:/ti/mspm0_sdk_2_11_00_07/source\ti/devices/msp/m0p/mspm0g350x.h:85:3: note: 'COMP2_INT_IRQn' declared here
+   85 |   COMP2_INT_IRQn              = 1,      /* 17 COMP2_INT Interrupt */
+      |   ^
+1 warning and 1 error generated.
+Arm Compiler - building file: "C:/ti/mspm0_sdk_2_11_00_07/source/ti/devices/msp/m0p/startup_system_files/ticlang/startup_mspm0g350x_ticlang.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"startup_mspm0g350x_ticlang.d_raw" -MT"startup_mspm0g350x_ticlang.o"  @"./device.opt"  -o"startup_mspm0g350x_ticlang.o" "C:/ti/mspm0_sdk_2_11_00_07/source/ti/devices/msp/m0p/startup_system_files/ticlang/startup_mspm0g350x_ticlang.c"
+Finished building: "C:/ti/mspm0_sdk_2_11_00_07/source/ti/devices/msp/m0p/startup_system_files/ticlang/startup_mspm0g350x_ticlang.c"
+ 
+Arm Compiler - building file: "../hardware/bsp_tb6612.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"hardware/bsp_tb6612.d_raw" -MT"hardware/bsp_tb6612.o"  @"./device.opt"  -o"hardware/bsp_tb6612.o" "../hardware/bsp_tb6612.c"
+Finished building: "../hardware/bsp_tb6612.c"
+ 
+Arm Compiler - building file: "../hardware/delay.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"hardware/delay.d_raw" -MT"hardware/delay.o"  @"./device.opt"  -o"hardware/delay.o" "../hardware/delay.c"
+Finished building: "../hardware/delay.c"
+ 
+Arm Compiler - building file: "../hardware/key.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"hardware/key.d_raw" -MT"hardware/key.o"  @"./device.opt"  -o"hardware/key.o" "../hardware/key.c"
+Finished building: "../hardware/key.c"
+ 
+Arm Compiler - building file: "../hardware/mpu6050.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"hardware/mpu6050.d_raw" -MT"hardware/mpu6050.o"  @"./device.opt"  -o"hardware/mpu6050.o" "../hardware/mpu6050.c"
+In file included from ../hardware/mpu6050.c:12:
+../hardware\mpu6050.h:47:9: warning: 'M_PI' macro redefined [-Wmacro-redefined]
+   47 | #define M_PI                            (float)3.1415926535f
+      |         ^
+C:\ti\ccs2051\ccs\tools\compiler\ti-cgt-armllvm_4.0.4.LTS\include\c\math.h:156:9: note: previous definition is here
+  156 | #define M_PI            3.14159265358979323846  /* pi */
+      |         ^
+1 warning generated.
+Finished building: "../hardware/mpu6050.c"
+ 
+Arm Compiler - building file: "../hardware/Encoder.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"hardware/Encoder.d_raw" -MT"hardware/Encoder.o"  @"./device.opt"  -o"hardware/Encoder.o" "../hardware/Encoder.c"
+Finished building: "../hardware/Encoder.c"
+ 
+Arm Compiler - building file: "ti_msp_dl_config.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"ti_msp_dl_config.d_raw" -MT"ti_msp_dl_config.o"  @"./device.opt"  -o"ti_msp_dl_config.o" "ti_msp_dl_config.c"
+Finished building: "ti_msp_dl_config.c"
+ 
+Arm Compiler - building file: "../hardware/oled.c"
+"C:/ti/ccs2051/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" -c @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang" -I"C:/Users/coxfi/workspace_ccstheia/empty_LP_MSPM0G3507_nortos_ticlang/Debug" -I"C:/ti/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include" -I"C:/ti/mspm0_sdk_2_11_00_07/source" -g -Wall -MMD -MP -MF"hardware/oled.d_raw" -MT"hardware/oled.o"  @"./device.opt"  -o"hardware/oled.o" "../hardware/oled.c"
+In file included from ../hardware/oled.c:10:
+../hardware\oledfont.h:16:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   16 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   17 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//  0
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:19:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   19 |     0x00,0x00,0x00,0xF8,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   20 |     0x00,0x00,0x00,0x33,0x30,0x00,0x00,0x00,//! 1
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:22:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   22 |     0x00,0x10,0x0C,0x06,0x10,0x0C,0x06,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   23 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//" 2
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:25:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   25 |     0x40,0xC0,0x78,0x40,0xC0,0x78,0x40,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   26 |     0x04,0x3F,0x04,0x04,0x3F,0x04,0x04,0x00,//# 3
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:28:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   28 |     0x00,0x70,0x88,0xFC,0x08,0x30,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   29 |     0x00,0x18,0x20,0xFF,0x21,0x1E,0x00,0x00,//$ 4
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:31:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   31 |     0xF0,0x08,0xF0,0x00,0xE0,0x18,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   32 |     0x00,0x21,0x1C,0x03,0x1E,0x21,0x1E,0x00,//% 5
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:34:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   34 |     0x00,0xF0,0x08,0x88,0x70,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   35 |     0x1E,0x21,0x23,0x24,0x19,0x27,0x21,0x10,//& 6
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:37:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   37 |     0x10,0x16,0x0E,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   38 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//' 7
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:40:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   40 |     0x00,0x00,0x00,0xE0,0x18,0x04,0x02,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   41 |     0x00,0x00,0x00,0x07,0x18,0x20,0x40,0x00,//( 8
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:43:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   43 |     0x00,0x02,0x04,0x18,0xE0,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   44 |     0x00,0x40,0x20,0x18,0x07,0x00,0x00,0x00,//) 9
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:46:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   46 |     0x40,0x40,0x80,0xF0,0x80,0x40,0x40,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   47 |     0x02,0x02,0x01,0x0F,0x01,0x02,0x02,0x00,//* 10
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:49:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   49 |     0x00,0x00,0x00,0xF0,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   50 |     0x01,0x01,0x01,0x1F,0x01,0x01,0x01,0x00,//+ 11
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:52:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   52 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   53 |     0x80,0xB0,0x70,0x00,0x00,0x00,0x00,0x00,//, 12
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:55:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   55 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   56 |     0x00,0x01,0x01,0x01,0x01,0x01,0x01,0x01,//- 13
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:58:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   58 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   59 |     0x00,0x30,0x30,0x00,0x00,0x00,0x00,0x00,//. 14
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:61:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   61 |     0x00,0x00,0x00,0x00,0x80,0x60,0x18,0x04,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   62 |     0x00,0x60,0x18,0x06,0x01,0x00,0x00,0x00,/// 15
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:64:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   64 |     0x00,0xE0,0x10,0x08,0x08,0x10,0xE0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   65 |     0x00,0x0F,0x10,0x20,0x20,0x10,0x0F,0x00,//0 16
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:67:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   67 |     0x00,0x10,0x10,0xF8,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   68 |     0x00,0x20,0x20,0x3F,0x20,0x20,0x00,0x00,//1 17
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:70:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   70 |     0x00,0x70,0x08,0x08,0x08,0x88,0x70,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   71 |     0x00,0x30,0x28,0x24,0x22,0x21,0x30,0x00,//2 18
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:73:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   73 |     0x00,0x30,0x08,0x88,0x88,0x48,0x30,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   74 |     0x00,0x18,0x20,0x20,0x20,0x11,0x0E,0x00,//3 19
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:76:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   76 |     0x00,0x00,0xC0,0x20,0x10,0xF8,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   77 |     0x00,0x07,0x04,0x24,0x24,0x3F,0x24,0x00,//4 20
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:79:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   79 |     0x00,0xF8,0x08,0x88,0x88,0x08,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   80 |     0x00,0x19,0x21,0x20,0x20,0x11,0x0E,0x00,//5 21
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:82:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   82 |     0x00,0xE0,0x10,0x88,0x88,0x18,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   83 |     0x00,0x0F,0x11,0x20,0x20,0x11,0x0E,0x00,//6 22
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:85:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   85 |     0x00,0x38,0x08,0x08,0xC8,0x38,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   86 |     0x00,0x00,0x00,0x3F,0x00,0x00,0x00,0x00,//7 23
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:88:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   88 |     0x00,0x70,0x88,0x08,0x08,0x88,0x70,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   89 |     0x00,0x1C,0x22,0x21,0x21,0x22,0x1C,0x00,//8 24
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:91:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   91 |     0x00,0xE0,0x10,0x08,0x08,0x10,0xE0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   92 |     0x00,0x00,0x31,0x22,0x22,0x11,0x0F,0x00,//9 25
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:94:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   94 |     0x00,0x00,0x00,0xC0,0xC0,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   95 |     0x00,0x00,0x00,0x30,0x30,0x00,0x00,0x00,//: 26
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:97:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+   97 |     0x00,0x00,0x00,0x80,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+   98 |     0x00,0x00,0x80,0x60,0x00,0x00,0x00,0x00,//; 27
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:100:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  100 |     0x00,0x00,0x80,0x40,0x20,0x10,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  101 |     0x00,0x01,0x02,0x04,0x08,0x10,0x20,0x00,//< 28
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:103:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  103 |     0x40,0x40,0x40,0x40,0x40,0x40,0x40,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  104 |     0x04,0x04,0x04,0x04,0x04,0x04,0x04,0x00,//= 29
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:106:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  106 |     0x00,0x08,0x10,0x20,0x40,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  107 |     0x00,0x20,0x10,0x08,0x04,0x02,0x01,0x00,//> 30
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:109:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  109 |     0x00,0x70,0x48,0x08,0x08,0x08,0xF0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  110 |     0x00,0x00,0x00,0x30,0x36,0x01,0x00,0x00,//? 31
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:112:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  112 |     0xC0,0x30,0xC8,0x28,0xE8,0x10,0xE0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  113 |     0x07,0x18,0x27,0x24,0x23,0x14,0x0B,0x00,//@ 32
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:115:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  115 |     0x00,0x00,0xC0,0x38,0xE0,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  116 |     0x20,0x3C,0x23,0x02,0x02,0x27,0x38,0x20,//A 33
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:118:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  118 |     0x08,0xF8,0x88,0x88,0x88,0x70,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  119 |     0x20,0x3F,0x20,0x20,0x20,0x11,0x0E,0x00,//B 34
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:121:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  121 |     0xC0,0x30,0x08,0x08,0x08,0x08,0x38,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  122 |     0x07,0x18,0x20,0x20,0x20,0x10,0x08,0x00,//C 35
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:124:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  124 |     0x08,0xF8,0x08,0x08,0x08,0x10,0xE0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  125 |     0x20,0x3F,0x20,0x20,0x20,0x10,0x0F,0x00,//D 36
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:127:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  127 |     0x08,0xF8,0x88,0x88,0xE8,0x08,0x10,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  128 |     0x20,0x3F,0x20,0x20,0x23,0x20,0x18,0x00,//E 37
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:130:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  130 |     0x08,0xF8,0x88,0x88,0xE8,0x08,0x10,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  131 |     0x20,0x3F,0x20,0x00,0x03,0x00,0x00,0x00,//F 38
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:133:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  133 |     0xC0,0x30,0x08,0x08,0x08,0x38,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  134 |     0x07,0x18,0x20,0x20,0x22,0x1E,0x02,0x00,//G 39
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:136:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  136 |     0x08,0xF8,0x08,0x00,0x00,0x08,0xF8,0x08,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  137 |     0x20,0x3F,0x21,0x01,0x01,0x21,0x3F,0x20,//H 40
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:139:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  139 |     0x00,0x08,0x08,0xF8,0x08,0x08,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  140 |     0x00,0x20,0x20,0x3F,0x20,0x20,0x00,0x00,//I 41
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:142:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  142 |     0x00,0x00,0x08,0x08,0xF8,0x08,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  143 |     0xC0,0x80,0x80,0x80,0x7F,0x00,0x00,0x00,//J 42
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:145:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  145 |     0x08,0xF8,0x88,0xC0,0x28,0x18,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  146 |     0x20,0x3F,0x20,0x01,0x26,0x38,0x20,0x00,//K 43
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:148:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  148 |     0x08,0xF8,0x08,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  149 |     0x20,0x3F,0x20,0x20,0x20,0x20,0x30,0x00,//L 44
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:151:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  151 |     0x08,0xF8,0xF8,0x00,0xF8,0xF8,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  152 |     0x20,0x3F,0x00,0x3F,0x00,0x3F,0x20,0x00,//M 45
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:154:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  154 |     0x08,0xF8,0x30,0xC0,0x00,0x08,0xF8,0x08,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  155 |     0x20,0x3F,0x20,0x00,0x07,0x18,0x3F,0x00,//N 46
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:157:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  157 |     0xE0,0x10,0x08,0x08,0x08,0x10,0xE0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  158 |     0x0F,0x10,0x20,0x20,0x20,0x10,0x0F,0x00,//O 47
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:160:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  160 |     0x08,0xF8,0x08,0x08,0x08,0x08,0xF0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  161 |     0x20,0x3F,0x21,0x01,0x01,0x01,0x00,0x00,//P 48
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:163:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  163 |     0xE0,0x10,0x08,0x08,0x08,0x10,0xE0,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  164 |     0x0F,0x18,0x24,0x24,0x38,0x50,0x4F,0x00,//Q 49
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:166:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  166 |     0x08,0xF8,0x88,0x88,0x88,0x88,0x70,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  167 |     0x20,0x3F,0x20,0x00,0x03,0x0C,0x30,0x20,//R 50
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:169:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  169 |     0x00,0x70,0x88,0x08,0x08,0x08,0x38,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  170 |     0x00,0x38,0x20,0x21,0x21,0x22,0x1C,0x00,//S 51
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:172:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  172 |     0x18,0x08,0x08,0xF8,0x08,0x08,0x18,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  173 |     0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//T 52
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:175:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  175 |     0x08,0xF8,0x08,0x00,0x00,0x08,0xF8,0x08,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  176 |     0x00,0x1F,0x20,0x20,0x20,0x20,0x1F,0x00,//U 53
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:178:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  178 |     0x08,0x78,0x88,0x00,0x00,0xC8,0x38,0x08,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  179 |     0x00,0x00,0x07,0x38,0x0E,0x01,0x00,0x00,//V 54
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:181:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  181 |     0xF8,0x08,0x00,0xF8,0x00,0x08,0xF8,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  182 |     0x03,0x3C,0x07,0x00,0x07,0x3C,0x03,0x00,//W 55
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:184:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  184 |     0x08,0x18,0x68,0x80,0x80,0x68,0x18,0x08,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  185 |     0x20,0x30,0x2C,0x03,0x03,0x2C,0x30,0x20,//X 56
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:187:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  187 |     0x08,0x38,0xC8,0x00,0xC8,0x38,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  188 |     0x00,0x00,0x20,0x3F,0x20,0x00,0x00,0x00,//Y 57
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:190:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  190 |     0x10,0x08,0x08,0x08,0xC8,0x38,0x08,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  191 |     0x20,0x38,0x26,0x21,0x20,0x20,0x18,0x00,//Z 58
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:193:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  193 |     0x00,0x00,0x00,0xFE,0x02,0x02,0x02,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  194 |     0x00,0x00,0x00,0x7F,0x40,0x40,0x40,0x00,//[ 59
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:196:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  196 |     0x00,0x0C,0x30,0xC0,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  197 |     0x00,0x00,0x00,0x01,0x06,0x38,0xC0,0x00,//\ 60
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:199:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  199 |     0x00,0x02,0x02,0x02,0xFE,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  200 |     0x00,0x40,0x40,0x40,0x7F,0x00,0x00,0x00,//] 61
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:202:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  202 |     0x00,0x00,0x04,0x02,0x02,0x02,0x04,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  203 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//^ 62
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:205:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  205 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  206 |     0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x80,//_ 63
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:208:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  208 |     0x00,0x02,0x02,0x04,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  209 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//` 64
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:211:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  211 |     0x00,0x00,0x80,0x80,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  212 |     0x00,0x19,0x24,0x22,0x22,0x22,0x3F,0x20,//a 65
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:214:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  214 |     0x08,0xF8,0x00,0x80,0x80,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  215 |     0x00,0x3F,0x11,0x20,0x20,0x11,0x0E,0x00,//b 66
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:217:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  217 |     0x00,0x00,0x00,0x80,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  218 |     0x00,0x0E,0x11,0x20,0x20,0x20,0x11,0x00,//c 67
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:220:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  220 |     0x00,0x00,0x00,0x80,0x80,0x88,0xF8,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  221 |     0x00,0x0E,0x11,0x20,0x20,0x10,0x3F,0x20,//d 68
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:223:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  223 |     0x00,0x00,0x80,0x80,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  224 |     0x00,0x1F,0x22,0x22,0x22,0x22,0x13,0x00,//e 69
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:226:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  226 |     0x00,0x80,0x80,0xF0,0x88,0x88,0x88,0x18,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  227 |     0x00,0x20,0x20,0x3F,0x20,0x20,0x00,0x00,//f 70
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:229:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  229 |     0x00,0x00,0x80,0x80,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  230 |     0x00,0x6B,0x94,0x94,0x94,0x93,0x60,0x00,//g 71
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:232:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  232 |     0x08,0xF8,0x00,0x80,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  233 |     0x20,0x3F,0x21,0x00,0x00,0x20,0x3F,0x20,//h 72
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:235:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  235 |     0x00,0x80,0x98,0x98,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  236 |     0x00,0x20,0x20,0x3F,0x20,0x20,0x00,0x00,//i 73
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:238:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  238 |     0x00,0x00,0x00,0x80,0x98,0x98,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  239 |     0x00,0xC0,0x80,0x80,0x80,0x7F,0x00,0x00,//j 74
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:241:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  241 |     0x08,0xF8,0x00,0x00,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  242 |     0x20,0x3F,0x24,0x02,0x2D,0x30,0x20,0x00,//k 75
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:244:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  244 |     0x00,0x08,0x08,0xF8,0x00,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  245 |     0x00,0x20,0x20,0x3F,0x20,0x20,0x00,0x00,//l 76
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:247:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  247 |     0x80,0x80,0x80,0x80,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  248 |     0x20,0x3F,0x20,0x00,0x3F,0x20,0x00,0x3F,//m 77
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:250:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  250 |     0x80,0x80,0x00,0x80,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  251 |     0x20,0x3F,0x21,0x00,0x00,0x20,0x3F,0x20,//n 78
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:253:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  253 |     0x00,0x00,0x80,0x80,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  254 |     0x00,0x1F,0x20,0x20,0x20,0x20,0x1F,0x00,//o 79
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:256:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  256 |     0x80,0x80,0x00,0x80,0x80,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  257 |     0x80,0xFF,0xA1,0x20,0x20,0x11,0x0E,0x00,//p 80
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:259:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  259 |     0x00,0x00,0x00,0x80,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  260 |     0x00,0x0E,0x11,0x20,0x20,0xA0,0xFF,0x80,//q 81
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:262:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  262 |     0x80,0x80,0x80,0x00,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  263 |     0x20,0x20,0x3F,0x21,0x20,0x00,0x01,0x00,//r 82
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:265:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  265 |     0x00,0x00,0x80,0x80,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  266 |     0x00,0x33,0x24,0x24,0x24,0x24,0x19,0x00,//s 83
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:268:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  268 |     0x00,0x80,0x80,0xE0,0x80,0x80,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  269 |     0x00,0x00,0x00,0x1F,0x20,0x20,0x00,0x00,//t 84
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:271:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  271 |     0x80,0x80,0x00,0x00,0x00,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  272 |     0x00,0x1F,0x20,0x20,0x20,0x10,0x3F,0x20,//u 85
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:274:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  274 |     0x80,0x80,0x80,0x00,0x00,0x80,0x80,0x80,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  275 |     0x00,0x01,0x0E,0x30,0x08,0x06,0x01,0x00,//v 86
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:277:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  277 |     0x80,0x80,0x00,0x80,0x00,0x80,0x80,0x80,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  278 |     0x0F,0x30,0x0C,0x03,0x0C,0x30,0x0F,0x00,//w 87
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:280:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  280 |     0x00,0x80,0x80,0x00,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  281 |     0x00,0x20,0x31,0x2E,0x0E,0x31,0x20,0x00,//x 88
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:283:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  283 |     0x80,0x80,0x80,0x00,0x00,0x80,0x80,0x80,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  284 |     0x80,0x81,0x8E,0x70,0x18,0x06,0x01,0x00,//y 89
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:286:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  286 |     0x00,0x80,0x80,0x80,0x80,0x80,0x80,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  287 |     0x00,0x21,0x30,0x2C,0x22,0x21,0x30,0x00,//z 90
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:289:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  289 |     0x00,0x00,0x00,0x00,0x80,0x7C,0x02,0x02,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  290 |     0x00,0x00,0x00,0x00,0x00,0x3F,0x40,0x40,//{ 91
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:292:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  292 |     0x00,0x00,0x00,0x00,0xFF,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  293 |     0x00,0x00,0x00,0x00,0xFF,0x00,0x00,0x00,//| 92
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:295:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  295 |     0x00,0x02,0x02,0x7C,0x80,0x00,0x00,0x00,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  296 |     0x00,0x40,0x40,0x3F,0x00,0x00,0x00,0x00,//} 93
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware\oledfont.h:298:5: warning: suggest braces around initialization of subobject [-Wmissing-braces]
+  298 |     0x00,0x06,0x01,0x01,0x02,0x02,0x04,0x04,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     {
+  299 |     0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,//~ 94
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                            }
+../hardware/oled.c:662:54: warning: explicitly assigning value of variable of type 'int32_t' (aka 'int') to itself [-Wself-assign]
+  662 |         if (num > 0) {OLED_ShowChar(x,y,'+',size1,mode);num = num;}
+      |                                                         ~~~ ^ ~~~
+../hardware/oled.c:663:59: warning: explicitly assigning value of variable of type 'int32_t' (aka 'int') to itself [-Wself-assign]
+  663 |         else if(num == 0) {OLED_ShowChar(x,y,' ',size1,mode);num = num;}
+      |                                                              ~~~ ^ ~~~
+../hardware/oled.c:699:54: warning: explicitly assigning value of variable of type 'double' to itself [-Wself-assign]
+  699 |         if (num > 0) {OLED_ShowChar(x,y,'+',size1,mode);num = num;}
+      |                                                         ~~~ ^ ~~~
+../hardware/oled.c:700:59: warning: explicitly assigning value of variable of type 'double' to itself [-Wself-assign]
+  700 |         else if(num == 0) {OLED_ShowChar(x,y,' ',size1,mode);num = num;}
+      |                                                              ~~~ ^ ~~~
+../hardware/oled.c:738:7: warning: variable 'temp' is uninitialized when used here [-Wuninitialized]
+  738 |                         if(temp&0x01)OLED_DrawPoint(x,y,mode);
+      |                            ^~~~
+../hardware/oled.c:722:16: note: initialize the variable 'temp' to silence this warning
+  722 |         uint8_t m,temp;
+      |                       ^
+      |                        = '\0'
+../hardware/oled.c:39:13: warning: unused function 'I2C_ACK' [-Wunused-function]
+   39 | static void I2C_ACK(void){
+      |             ^~~~~~~
+../hardware/oled.c:113:13: warning: unused function 'IIC_SendOneByte' [-Wunused-function]
+  113 | static void IIC_SendOneByte(u8 write_addr,u8 write_reg,u8 write_data){
+      |             ^~~~~~~~~~~~~~~
+../hardware/oled.c:124:11: warning: unused function 'IIC_Write_Len' [-Wunused-function]
+  124 | static u8 IIC_Write_Len(u8 addr,u8 reg,u8 len,u8 *buf){
+      |           ^~~~~~~~~~~~~
+../hardware/oled.c:140:11: warning: unused function 'IIC_ReadOneByte' [-Wunused-function]
+  140 | static u8 IIC_ReadOneByte(u8 read_addr,u8 read_reg){
+      |           ^~~~~~~~~~~~~~~
+../hardware/oled.c:156:11: warning: unused function 'IIC_Read_Len' [-Wunused-function]
+  156 | static u8 IIC_Read_Len(u8 addr,u8 reg,u8 len,u8 *buf){ 
+      |           ^~~~~~~~~~~~
+105 warnings generated.
+Finished building: "../hardware/oled.c"
+ 
+gmake: Target 'all' not remade because of errors.
+ 
+**** Build finished ****
+
