@@ -1,0 +1,14 @@
+固件已添加至嘉楠官方镜像列表中，
+在此您可以下载到最新版本的固件
+！！！！！！！！！！！！！！！！！！！！！
+（请选择文件名中带有YABHOOM的固件）
+！！！！！！！！！！！！！！！！！！！！！！！！
+https://www.kendryte.com/zh/resource/images,k230
+
+固件源码地址：
+（海外）https://github.com/kendryte/k230_rtos_sdk
+（国内）https://gitee.com/canmv-k230/canmv
+
+编译环境搭建 & 固件编译步骤：
+（海外）https://github.com/kendryte/k230_rtos_sdk/blob/main/BUILD.md
+（国内）https://gitee.com/canmv-k230/canmv/blob/canmv_k230/BUILD.md

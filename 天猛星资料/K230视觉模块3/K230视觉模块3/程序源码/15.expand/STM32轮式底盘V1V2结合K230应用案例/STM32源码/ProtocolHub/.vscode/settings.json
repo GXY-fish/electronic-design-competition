@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "stm32f10x.h": "c",
+        "bsp_motor_iic.h": "c"
+    }
+}

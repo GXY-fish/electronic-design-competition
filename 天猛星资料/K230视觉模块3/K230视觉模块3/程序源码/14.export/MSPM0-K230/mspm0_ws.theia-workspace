@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": ""
+    }
+  ],
+"settings": {},
+"launch": {
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "01_k230_color_detect",
+            "type": "ccs-debug",
+            "request": "launch",
+            "projectInfo": {
+                "name": "01_k230_color_detect",
+                "resourceId": "/01_k230_color_detect"
+            }
+        }
+    ]
+}
+}

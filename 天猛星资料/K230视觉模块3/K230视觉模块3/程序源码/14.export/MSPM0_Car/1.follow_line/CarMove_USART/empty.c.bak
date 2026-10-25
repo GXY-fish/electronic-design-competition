@@ -1,0 +1,300 @@
+#include "ti_msp_dl_config.h"
+#include "delay.h"
+#include "usart.h"
+#include "app_motor_usart.h"
+
+#define UPLOAD_DATA 3  //0:不接受数据 1:接收总的编码器数据 2:接收实时的编码器 3:接收电机当前速度 mm/s
+					   //0: Do not receive data 1: Receive total encoder data 2: Receive real-time encoder 3: Receive current motor speed mm/s
+
+#define MOTOR_TYPE 1   //1:520电机 2:310电机 3:测速码盘TT电机 4:TT直流减速电机 5:L型520电机
+                       //1:520 motor 2:310 motor 3:speed code disc TT motor 4:TT DC reduction motor 5:L type 520 motor
+
+uint8_t times = 0;
+
+// 定义串口接收缓冲区和相关变量
+#define RX_BUFFER_SIZE 10
+char rx_buffer[RX_BUFFER_SIZE];
+uint8_t rx_index = 0;
+uint8_t rx_complete = 0;
+
+void Car_Move(void)
+{
+	static uint8_t state = 0;
+	switch(state)
+	{
+		case 0:
+		Contrl_Speed(300,300,300,300);//前进 Forward
+		break;
+		
+		case 1:
+		Contrl_Speed(-300,-300,-300,-300);//后退 Back
+		break;
+		
+		case 2:
+		Contrl_Speed(600,600,-400,-400);//右旋	Rotate right
+		break;
+		
+		case 3:
+		Contrl_Speed(-400,-400,600,600);//左旋	Rotate left		
+		break;
+		
+		case 4:
+		Contrl_Speed(0,0,0,0);//停车	Stop
+		break;
+	}
+	state++;
+	if(state>4)state=0;
+}
+
+void Car_Move_PWM(void)
+{
+	static uint8_t state = 0;
+	switch(state)
+	{
+		case 0:
+		Contrl_Pwm(1500,1500,1500,1500);//前进 Forward
+		break;
+		
+		case 1:
+		Contrl_Pwm(-1500,-1500,-1500,-1500);//后退 Back
+		break;
+		
+		case 2:
+		Contrl_Pwm(1200,1200,-1500,-1500);//右旋	Rotate right
+		break;
+		
+		case 3:
+		Contrl_Pwm(-1500,-1500,1200,1200);//左旋	Rotate left
+		break;
+		
+		case 4:
+		Contrl_Pwm(0,0,0,0);//停车	Stop
+		break;
+	}
+	state++;
+	if(state>4)state=0;
+}
+
+// 前进函数
+void Car_Forward(void)
+{
+    #if MOTOR_TYPE == 4
+    Contrl_Pwm(1500,1500,1500,1500);
+    #else
+    Contrl_Speed(300,300,300,300);
+    #endif
+}
+
+// 后退函数
+void Car_Backward(void)
+{
+    #if MOTOR_TYPE == 4
+    Contrl_Pwm(-1500,-1500,-1500,-1500);
+    #else
+    Contrl_Speed(-300,-300,-300,-300);
+    #endif
+}
+
+// 停车函数
+void Car_Stop(void)
+{
+    #if MOTOR_TYPE == 4
+    Contrl_Pwm(0,0,0,0);
+    #else
+    Contrl_Speed(0,0,0,0);
+    #endif
+}
+
+// 解析串口命令
+void Parse_Command(void)
+{
+    if (rx_index >= 3 && rx_buffer[0] == '$' && rx_buffer[2] == '#') {
+        if (rx_buffer[1] == '0') {
+            // 收到"$0#"命令，小车前进1秒
+            printf("Command received: Forward\r\n");
+            Car_Forward();
+            delay_ms(1000);  // 延时1秒
+            Car_Stop();      // 停车
+        }
+        else if (rx_buffer[1] == '1') {
+            // 收到"$1#"命令，小车后退1秒
+            printf("Command received: Backward\r\n");
+            Car_Backward();
+            delay_ms(1000);  // 延时1秒
+            Car_Stop();      // 停车
+        }
+    }
+    
+    // 重置接收缓冲区
+    rx_index = 0;
+    rx_complete = 0;
+}
+
+int main(void)
+{	
+	USART_Init();
+	
+	printf("pelase wait...\r\n");
+	Contrl_Pwm(0,0,0,0);
+	delay_ms(100);
+	//先关闭上报	Close the report first
+	send_upload_data(false,false,false);
+	delay_ms(10);
+	
+    #if MOTOR_TYPE == 1
+	send_motor_type(1);//配置电机类型	Configure motor type
+	delay_ms(100);
+	send_pulse_phase(30);//配置减速比 查电机手册得出	Configure the reduction ratio. Check the motor manual to find out
+	delay_ms(100);
+	send_pulse_line(11);//配置磁环线 查电机手册得出	Configure the magnetic ring wire. Check the motor manual to get the result.
+	delay_ms(100);
+	send_wheel_diameter(67.00);//配置轮子直径,测量得出		Configure the wheel diameter and measure it
+	delay_ms(100);
+	send_motor_deadzone(1900);//配置电机死区,实验得出	Configure the motor dead zone, and the experiment shows
+	delay_ms(100);
+    
+    #elif MOTOR_TYPE == 2
+    send_motor_type(2);
+	delay_ms(100);
+	send_pulse_phase(20);
+	delay_ms(100);
+	send_pulse_line(13);
+	delay_ms(100);
+	send_wheel_diameter(48.00);
+	delay_ms(100);
+	send_motor_deadzone(1600);
+	delay_ms(100);
+    
+    #elif MOTOR_TYPE == 3
+    send_motor_type(3);
+	delay_ms(100);
+	send_pulse_phase(45);
+	delay_ms(100);
+	send_pulse_line(13);
+	delay_ms(100);
+	send_wheel_diameter(68.00);
+	delay_ms(100);
+	send_motor_deadzone(1250);
+	delay_ms(100);
+    
+    #elif MOTOR_TYPE == 4
+    send_motor_type(4);
+	delay_ms(100);
+	send_pulse_phase(48);
+	delay_ms(100);
+	send_motor_deadzone(1000);
+	delay_ms(100);
+    
+    #elif MOTOR_TYPE == 5
+    send_motor_type(1);
+	delay_ms(100);
+	send_pulse_phase(40);
+	delay_ms(100);
+	send_pulse_line(11);
+	delay_ms(100);
+	send_wheel_diameter(67.00);
+	delay_ms(100);
+	send_motor_deadzone(1900);
+	delay_ms(100);
+    #endif
+	
+	//给电机模块发送需要上报的数据	Send the data that needs to be reported to the motor module
+	#if UPLOAD_DATA == 1
+	send_upload_data(true,false,false);delay_ms(10);
+	#elif UPLOAD_DATA == 2
+	send_upload_data(false,true,false);delay_ms(10);
+	#elif UPLOAD_DATA == 3
+	send_upload_data(false,false,true);delay_ms(10);
+	#endif
+	
+	//清除定时器中断标志	Clear the timer interrupt flag
+    NVIC_ClearPendingIRQ(TIMER_0_INST_INT_IRQN);
+    //使能定时器中断	Enable timer interrupt
+    NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);
+
+    SYSCFG_DL_init(); 
+    //清除串口中断标志 Clear the serial port interrupt flag
+    NVIC_ClearPendingIRQ(UART_3_INST_INT_IRQN);
+    //使能串口中断 Enable serial port interrupt
+    NVIC_EnableIRQ(UART_3_INST_INT_IRQN);
+	
+    printf("System ready, waiting for commands...\r\n");
+    printf("$0# - Forward for 1 second\r\n");
+    printf("$1# - Backward for 1 second\r\n");
+    
+	while(1)
+	{
+		// 检查是否接收到完整的命令
+		if(rx_complete)
+		{
+		    Parse_Command();
+		}
+		
+		if(g_recv_flag == 1)
+		{
+			g_recv_flag = 0;
+			
+			#if UPLOAD_DATA == 1
+				Deal_data_real();
+				printf("M1:%d,M2:%d,M3:%d,M4:%d\r\n",Encoder_Now[0],Encoder_Now[1],Encoder_Now[2],Encoder_Now[3]);
+			#elif UPLOAD_DATA == 2
+				Deal_data_real();
+				printf("M1:%d,M2:%d,M3:%d,M4:%d\r\n",Encoder_Offset[0],Encoder_Offset[1],Encoder_Offset[2],Encoder_Offset[3]);
+			#elif UPLOAD_DATA == 3
+				Deal_data_real();
+				printf("M1:%.2f,M2:%.2f,M3:%.2f,M4:%.2f\r\n",g_Speed[0],g_Speed[1],g_Speed[2],g_Speed[3]);
+			#endif
+		}
+	}
+	
+}
+
+//定时器的中断服务函数,每100ms读取数据并打印
+//The timer interrupt service function reads and prints data every 100ms
+void TIMER_0_INST_IRQHandler(void)
+{
+    //如果产生了定时器中断	If a timer interrupt occurs
+    switch( DL_TimerG_getPendingInterrupt(TIMER_0_INST) )
+    {
+        case DL_TIMER_IIDX_ZERO://如果是0溢出中断	If it is 0 overflow interrupt
+			times++;
+			break;
+
+        default:
+            break;
+    }
+}
+
+//串口的中断服务函数 Serial port interrupt service function
+void UART_3_INST_IRQHandler(void)
+{
+    //如果产生了串口中断 If a serial port interrupt occurs
+    switch( DL_UART_getPendingInterrupt(UART_3_INST) )
+    {
+        case DL_UART_IIDX_RX: //如果是接收中断 If it is a receive interrupt
+            //接收数据 Receive data
+            char rx_data = DL_UART_Main_receiveData(UART_3_INST);
+            
+            // 将接收到的数据存入缓冲区
+            if (rx_index < RX_BUFFER_SIZE - 1) {
+                rx_buffer[rx_index++] = rx_data;
+                
+                // 检查是否接收到'#'结束符
+                if (rx_data == '#') {
+                    rx_complete = 1;  // 标记接收完成
+                }
+            } else {
+                // 缓冲区溢出，重置
+                rx_index = 0;
+            }
+
+            // printf("%c", rx_data)
+            while( DL_UART_isBusy(UART_3_INST) == true );
+            //发送单个字符 Send a single character
+            DL_UART_Main_transmitData(UART_3_INST, rx_data);
+
+            break;
+        default://其他的串口中断 Other serial port interrupts
+            break;
+    }
+}
