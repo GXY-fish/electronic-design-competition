@@ -1,0 +1,6 @@
+﻿# 编译产物
+Objects/
+Listings/
+
+# Keil 个人 UI 配置
+*.uvguix.*
