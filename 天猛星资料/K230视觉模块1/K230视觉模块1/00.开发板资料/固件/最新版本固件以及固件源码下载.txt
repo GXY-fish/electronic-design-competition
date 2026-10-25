@@ -1,0 +1,11 @@
+固件已添加至官方Daily Build列表中，
+在此您可以下载到每日更新的最新版本的固件（请选择文件名中带有YABHOOM的固件）
+https://kendryte-download.canaan-creative.com/developer/releases/canmv_k230_micropython/daily_build/
+
+固件源码地址：
+（海外）https://github.com/kendryte/k230_rtos_sdk
+（国内）https://gitee.com/canmv-k230/canmv
+
+编译环境搭建 & 固件编译步骤：
+（海外）https://github.com/kendryte/k230_rtos_sdk/blob/main/BUILD.md
+（国内）https://gitee.com/canmv-k230/canmv/blob/canmv_k230/BUILD.md
