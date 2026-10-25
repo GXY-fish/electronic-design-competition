@@ -1,0 +1,56 @@
+{
+    "chip_type": "k230",
+    "inference_width": 640,
+    "inference_height": 640,
+    "confidence_threshold": 0.25,
+    "nms_threshold": 0.4,
+    "nncase_version": "2.9.0",
+    "model_type": "AnchorBaseDet",
+    "img_size": [
+        640,
+        640
+    ],
+    "anchors": [
+        [
+            191,
+            151,
+            255,
+            169,
+            239,
+            208
+        ],
+        [
+            527,
+            133,
+            318,
+            246,
+            289,
+            286
+        ],
+        [
+            263,
+            327,
+            467,
+            192,
+            356,
+            329
+        ]
+    ],
+    "mean": [
+        0.485,
+        0.456,
+        0.406
+    ],
+    "std": [
+        0.229,
+        0.224,
+        0.225
+    ],
+    "categories": [
+        "Screwdriver",
+        "Band"
+    ],
+    "nms_option": false,
+    "kmodel_path": "best_AnchorBaseDet_can2_10_s_20250225112037.kmodel",
+    "num_classes": 2
+}
